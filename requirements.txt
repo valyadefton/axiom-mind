@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+supabase
+groq
+httpx
+python-dotenv
+pydantic>=2.10
+tenacity
+coldreach
+dnspython

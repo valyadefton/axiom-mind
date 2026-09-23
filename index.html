@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axiom Mind - Enterprise Intelligence</title>
+    <style>
+        :root { --bg:#0a0e17; --surface:#1a2332; --border:#2a3441; --text:#e5e7eb; --muted:#9ca3af; --blue:#3b82f6; --cyan:#06b6d4; --purple:#8b5cf6; --green:#10b981; --red:#ef4444; }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
+        body { background:var(--bg); color:var(--text); min-height:100vh; padding:20px; }
+        .container { max-width:1200px; margin:0 auto; }
+        .header { text-align:center; padding:40px 0; background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(139,92,246,0.1)); border-radius:20px; margin-bottom:30px; }
+        .logo { font-size:42px; font-weight:800; background:linear-gradient(135deg,#3b82f6,#06b6d4,#8b5cf6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .subtitle { color:var(--muted); margin-top:10px; font-size:18px; }
+        .tabs { display:flex; gap:10px; margin:30px 0; justify-content:center; flex-wrap:wrap; }
+        .tab { padding:14px 28px; background:var(--surface); border:1px solid var(--border); border-radius:12px; cursor:pointer; color:var(--muted); font-weight:500; transition:all 0.3s; }
+        .tab.active { background:linear-gradient(135deg,#3b82f6,#2563eb); color:white; border-color:#3b82f6; }
+        .tab:hover { transform:translateY(-2px); border-color:var(--blue); }
+        .panel { display:none; animation:fadeIn 0.5s; }
+        .panel.active { display:block; }
+        .card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:30px; margin-bottom:20px; }
+        .card h2 { color:#60a5fa; margin-bottom:20px; font-size:24px; }
+        .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+        input, textarea { width:100%; padding:14px; background:var(--bg); border:1px solid var(--border); border-radius:10px; color:var(--text); font-size:15px; margin-bottom:15px; transition:all 0.3s; }
+        input:focus, textarea:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(59,130,246,0.1); }
+        textarea { min-height:100px; resize:vertical; }
+        button { padding:14px 30px; background:linear-gradient(135deg,#3b82f6,#2563eb); border:none; border-radius:10px; color:white; font-weight:600; cursor:pointer; width:100%; font-size:16px; transition:all 0.3s; }
+        button:hover { transform:translateY(-2px); box-shadow:0 10px 25px rgba(59,130,246,0.3); }
+        button.secondary { background:var(--surface); border:1px solid var(--border); width:auto; padding:8px 16px; font-size:13px; margin-top:0; }
+        button.secondary:hover { box-shadow:none; border-color:var(--blue); }
+        .result { margin-top:20px; padding:20px; background:var(--bg); border-radius:10px; line-height:1.8; white-space:pre-wrap; }
+        .result h3 { color:#60a5fa; margin:15px 0 10px; font-size:18px; }
+        .toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+        .badge { display:inline-block; padding:4px 10px; border-radius:6px; font-size:13px; font-weight:700; margin:2px; }
+        .badge-high { background:rgba(16,185,129,0.2); color:#34d399; }
+        .badge-medium { background:rgba(245,158,11,0.2); color:#fbbf24; }
+        .badge-low { background:rgba(239,68,68,0.2); color:#f87171; }
+        .loading { text-align:center; padding:30px; color:#60a5fa; }
+        .spinner { width:40px; height:40px; border:4px solid var(--surface); border-top:4px solid var(--blue); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 15px; }
+        .source-link { color:#60a5fa; text-decoration:none; word-break:break-all; display:block; padding:5px 0; }
+        .source-link:hover { text-decoration:underline; }
+        .lead-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:16px; white-space:normal; }
+        .lead-head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap; }
+        .lead-name { font-size:18px; font-weight:700; color:var(--text); }
+        .lead-desc { color:var(--muted); font-size:14px; margin:8px 0; }
+        .why-fit { font-size:13px; color:#93c5fd; margin-bottom:12px; }
+        .section-title { font-size:13px; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); margin:14px 0 8px; }
+        .contact-row { display:flex; justify-content:space-between; gap:10px; padding:8px 10px; background:var(--bg); border-radius:8px; margin-bottom:6px; font-size:13px; flex-wrap:wrap; }
+        .contact-row a { color:#60a5fa; }
+        .email-tabs { display:flex; gap:8px; margin-bottom:8px; }
+        .email-tab { padding:6px 12px; background:var(--bg); border:1px solid var(--border); border-radius:6px; font-size:12px; cursor:pointer; color:var(--muted); }
+        .email-tab.active { background:var(--blue); color:white; border-color:var(--blue); }
+        .email-box { background:var(--bg); border-radius:8px; padding:14px; font-size:13px; display:none; }
+        .email-box.active { display:block; }
+        .email-subject { font-weight:700; margin-bottom:8px; }
+        .email-body { color:var(--muted); white-space:pre-wrap; margin-bottom:10px; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes spin { to{transform:rotate(360deg)} }
+        @media(max-width:768px){ .grid-2{grid-template-columns:1fr} .logo{font-size:32px} }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">Axiom Mind</div>
+            <p class="subtitle">Enterprise Intelligence Platform</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('analyze',this)">Анализ</button>
+            <button class="tab" onclick="switchTab('competitor',this)">Конкуренты</button>
+            <button class="tab" onclick="switchTab('leads',this)">Лиды</button>
+        </div>
+
+        <div class="panel active" id="panel-analyze">
+            <div class="card">
+                <h2>Бизнес-анализ</h2>
+                <input type="text" id="industry" placeholder="Индустрия (необязательно)">
+                <textarea id="query" placeholder="Опишите ваш вопрос или задачу..."></textarea>
+                <button onclick="runAnalyze()">Анализировать</button>
+                <div id="analyzeResult"></div>
+            </div>
+        </div>
+
+        <div class="panel" id="panel-competitor">
+            <div class="card">
+                <h2>Анализ конкурентов</h2>
+                <input type="text" id="competitorUrl" placeholder="Название конкурента или сайт">
+                <button onclick="runCompetitor()">Анализировать</button>
+                <div id="competitorResult"></div>
+            </div>
+        </div>
+
+        <div class="panel" id="panel-leads">
+            <div class="card">
+                <h2>Поиск лидов</h2>
+                <div class="grid-2">
+                    <input type="text" id="niche" placeholder="Ниша (например: стоматология)">
+                    <input type="text" id="city" placeholder="Город (например: Москва)">
+                </div>
+                <textarea id="product" placeholder="Описание продукта (что вы продаёте, кому и зачем — чем подробнее, тем точнее fit-score и письма)"></textarea>
+                <button onclick="runLeads()">Найти лидов</button>
+                <div id="leadsResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = 'http://localhost:8000';
+        let currentLeads = [];
+
+        function switchTab(tab, btn) {
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('panel-' + tab).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function showLoading(id) {
+            document.getElementById(id).innerHTML = '<div class="loading"><div class="spinner"></div>Обработка...</div>';
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        async function runAnalyze() {
+            const query = document.getElementById('query').value;
+            const industry = document.getElementById('industry').value;
+            if (!query) { alert('Введите вопрос'); return; }
+
+            showLoading('analyzeResult');
+
+            try {
+                const res = await fetch(API + '/api/analyze', {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({query, industry})
+                });
+                const data = await res.json();
+
+                let html = '<div class="result">';
+                html += '<div>' + escapeHtml(data.answer || 'Нет ответа') + '</div>';
+
+                if (data.sources && data.sources.length > 0) {
+                    html += '<h3>Источники:</h3>';
+                    data.sources.forEach(s => {
+                        html += '<a href="' + s.url + '" class="source-link" target="_blank">' + escapeHtml(s.title) + '</a>';
+                    });
+                }
+                html += '</div>';
+
+                document.getElementById('analyzeResult').innerHTML = html;
+            } catch(e) {
+                document.getElementById('analyzeResult').innerHTML = '<div class="result">Ошибка: ' + e.message + '</div>';
+            }
+        }
+
+        async function runCompetitor() {
+            const url = document.getElementById('competitorUrl').value;
+            if (!url) { alert('Введите конкурента'); return; }
+
+            showLoading('competitorResult');
+
+            try {
+                const res = await fetch(API + '/api/competitor', {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({url})
+                });
+                const data = await res.json();
+
+                let html = '<div class="result">';
+                html += '<div>' + escapeHtml(data.analysis || 'Нет данных') + '</div>';
+
+                if (data.sources && data.sources.length > 0) {
+                    html += '<h3>Источники:</h3>';
+                    data.sources.forEach(s => {
+                        html += '<a href="' + s.url + '" class="source-link" target="_blank">' + escapeHtml(s.title) + '</a>';
+                    });
+                }
+                html += '</div>';
+
+                document.getElementById('competitorResult').innerHTML = html;
+            } catch(e) {
+                document.getElementById('competitorResult').innerHTML = '<div class="result">Ошибка</div>';
+            }
+        }
+
+        function scoreBadgeClass(score) {
+            if (score >= 70) return 'badge-high';
+            if (score >= 40) return 'badge-medium';
+            return 'badge-low';
+        }
+
+        function renderLeadCard(lead, idx) {
+            let html = '<div class="lead-card">';
+            html += '<div class="lead-head">';
+            html += '<div class="lead-name">' + escapeHtml(lead.name) + '</div>';
+            html += '<span class="badge ' + scoreBadgeClass(lead.fit_score || 0) + '">Fit: ' + (lead.fit_score ?? '-') + '</span>';
+            html += '</div>';
+            html += '<a href="' + lead.website + '" class="source-link" target="_blank">' + escapeHtml(lead.website) + '</a>';
+            if (lead.description) html += '<div class="lead-desc">' + escapeHtml(lead.description) + '</div>';
+            if (lead.why_fit) html += '<div class="why-fit">Почему подходит: ' + escapeHtml(lead.why_fit) + '</div>';
+
+            if (lead.contacts && lead.contacts.length > 0) {
+                html += '<div class="section-title">Контакты</div>';
+                lead.contacts.forEach(c => {
+                    html += '<div class="contact-row">';
+                    html += '<span><strong>' + escapeHtml(c.full_name) + '</strong> — ' + escapeHtml(c.position) + '</span>';
+                    if (c.email && c.email !== 'email not found') {
+                        html += '<span>' + escapeHtml(c.email) + (c.linkedin_url ? ' · <a href="' + c.linkedin_url + '" target="_blank">LinkedIn</a>' : '') + '</span>';
+                    } else {
+                        html += '<span style="color:var(--muted)">email not found</span>';
+                    }
+                    html += '</div>';
+                });
+            }
+
+            if (lead.emails && lead.emails.length > 0) {
+                html += '<div class="section-title">Письма</div>';
+                html += '<div class="email-tabs">';
+                lead.emails.forEach((em, i) => {
+                    html += '<div class="email-tab' + (i===0 ? ' active' : '') + '" onclick="switchEmailTab(' + idx + ',' + i + ',this)">' + escapeHtml(em.variant) + '</div>';
+                });
+                html += '</div>';
+                lead.emails.forEach((em, i) => {
+                    html += '<div class="email-box' + (i===0 ? ' active' : '') + '" id="email-' + idx + '-' + i + '">';
+                    html += '<div class="email-subject">' + escapeHtml(em.subject) + '</div>';
+                    html += '<div class="email-body">' + escapeHtml(em.body) + '</div>';
+                    html += '<button class="secondary" onclick="copyEmail(' + idx + ',' + i + ')">Скопировать</button>';
+                    html += '</div>';
+                });
+            }
+
+            html += '</div>';
+            return html;
+        }
+
+        function switchEmailTab(leadIdx, emailIdx, btn) {
+            const parent = btn.closest('.lead-card');
+            parent.querySelectorAll('.email-tab').forEach(t => t.classList.remove('active'));
+            parent.querySelectorAll('.email-box').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('email-' + leadIdx + '-' + emailIdx).classList.add('active');
+        }
+
+        function copyEmail(leadIdx, emailIdx) {
+            const lead = currentLeads[leadIdx];
+            const em = lead.emails[emailIdx];
+            const text = 'Subject: ' + em.subject + '\n\n' + em.body;
+            navigator.clipboard.writeText(text).then(() => alert('Письмо скопировано'));
+        }
+
+        function exportCSV() {
+            if (!currentLeads.length) { alert('Нет лидов для экспорта'); return; }
+            const rows = [['Company','Website','Fit Score','Why Fit','Contact Name','Position','Email','LinkedIn']];
+            currentLeads.forEach(lead => {
+                const contacts = (lead.contacts && lead.contacts.length) ? lead.contacts : [{full_name:'',position:'',email:'',linkedin_url:''}];
+                contacts.forEach(c => {
+                    rows.push([
+                        lead.name, lead.website, lead.fit_score, lead.why_fit,
+                        c.full_name, c.position, c.email, c.linkedin_url || ''
+                    ]);
+                });
+            });
+            const csv = rows.map(r => r.map(v => '"' + String(v ?? '').replace(/"/g,'""') + '"').join(',')).join('\n');
+            const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'axiom_mind_leads.csv';
+            link.click();
+        }
+
+        async function runLeads() {
+            const niche = document.getElementById('niche').value;
+            const city = document.getElementById('city').value;
+            const product = document.getElementById('product').value;
+            if (!niche || !city) { alert('Введите нишу и город'); return; }
+
+            showLoading('leadsResult');
+
+            try {
+                const res = await fetch(API + '/api/leads', {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({niche, city, product})
+                });
+                const data = await res.json();
+                currentLeads = data.leads || [];
+
+                let html = '';
+                html += '<div class="toolbar"><h3 style="margin:0;color:#60a5fa;">Найдено: ' + (data.total || 0) + ' лидов, показано: ' + currentLeads.length + '</h3>';
+                html += '<button class="secondary" onclick="exportCSV()">Экспорт в CSV</button></div>';
+
+                if (data.error) {
+                    html += '<div class="result">Ошибка: ' + escapeHtml(data.error) + '</div>';
+                } else if (currentLeads.length > 0) {
+                    currentLeads.forEach((lead, idx) => { html += renderLeadCard(lead, idx); });
+                } else {
+                    html += '<div class="result">Ничего не найдено. Попробуйте другие ключевые слова.</div>';
+                }
+
+                document.getElementById('leadsResult').innerHTML = html;
+            } catch(e) {
+                document.getElementById('leadsResult').innerHTML = '<div class="result">Ошибка: ' + e.message + '</div>';
+            }
+        }
+    </script>
+</body>
+</html>
