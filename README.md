@@ -58,18 +58,21 @@ text
 - ✅ 3 variants of cold emails (short, medium, case)
 - ✅ Save to Supabase
 - ✅ Honest email finder (no fake emails, SMTP verification)
+  
 
 ## 📸 Screenshots
 
-### Web Interface (Main Page)
-![Web Interface 1](screenshots/web-interface-1.png)
+### 1. Web Interface — Main Page
+![Web Main](screenshots/01-web-main.png)
 
-### Lead Search Results
-![Web Interface 2](screenshots/web-interface-2.png)
+### 2. Web Interface — Search Results
+![Web Results](screenshots/02-web-results.png)
 
-### n8n Workflow
-![n8n Workflow](screenshots/workflow.png)
+### 3. Web Interface — Lead Card & Emails
+![Web Lead](screenshots/03-web-lead.png)
 
+### 4. n8n Workflow (Final)
+![n8n Workflow Final](screenshots/04-workflow-final.png)
 ## 🔮 What's Next (potential return)
 
 - [ ] Connect FastAPI ↔ n8n
