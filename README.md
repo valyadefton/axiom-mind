@@ -1,8 +1,18 @@
 # Axiom Mind — AI Agent for B2B Lead Generation
 
-![Status](https://img.shields.io/badge/status-in%20development-yellow)
-![Stack](https://img.shields.io/badge/stack-n8n%20%7C%20FastAPI%20%7C%20Supabase%20%7C%20Polza.ai-blue)
+![Status](https://img.shields.io/badge/status-paused-yellow)
+![Stack](https://img.shields.io/badge/stack-n8n%20%7C%20FastAPI%20%7C%20Supabase%20%7C%20OpenRouter-blue)
 ![Made by](https://img.shields.io/badge/made%20by-Valya-purple)
+![Focus](https://img.shields.io/badge/focus-Russia%20%E2%86%92%20Germany%20%F0%9F%87%A9%F0%9F%87%AA-green)
+
+**IT Enthusiast & Future Fachinformatikerin | Building AI automation tools (n8n, Python) | Focus: Data & Process Analysis | Russia → Germany 🇩🇪**
+
+---
+
+> **Project Status: Paused.**  
+> The project is paused due to technical constraints (sanctions, unavailable email services, lack of hosting budget) and a shift in focus to vocational training (Ausbildung) in Germany. The project remains part of my portfolio.
+
+---
 
 AI agent that finds B2B companies, scores them by fit, finds real emails, and writes personalized cold emails.
 
@@ -15,7 +25,6 @@ Companies waste hours manually researching prospects. Then send generic emails t
 ## 💡 Solution
 
 **Zero-Trust Outbound:**
-
 - **Signal-First** — find companies with a trigger (new SDR hire, funding round, CRO change)
 - **Verified-Only** — email verified at send time. Bounce <1% or refund
 - **5-Minute Review** — human in the loop, but no routine
@@ -27,7 +36,7 @@ Companies waste hours manually researching prospects. Then send generic emails t
 | Orchestration | n8n (Docker) |
 | Backend | FastAPI (Python) |
 | Database | Supabase (PostgreSQL) |
-| LLM | Polza.ai (GPT-4o-mini) |
+| LLM | OpenRouter (Gemini 2.5 Flash / NVIDIA Nemotron) |
 | Search | Serper.dev |
 | Email finder | Custom (website scrape + SMTP verify) |
 
@@ -36,7 +45,7 @@ Companies waste hours manually researching prospects. Then send generic emails t
 ↓
 [FastAPI: main.py]
 ↓
-[n8n Webhook → Serper → Code → Polza → Respond]
+[n8n Webhook → Serper → Code → OpenRouter → Code → Iteration → find_email → Code → Jev → Code → Respond]
 ↓
 [Supabase: leads, contacts, emails, searches]
 
@@ -45,18 +54,30 @@ text
 ## 🚀 What Works
 
 - ✅ Find companies by niche + city (Serper)
-- ✅ Fit-score 0–100 with explanation (GPT-4o-mini)
+- ✅ Fit-score 0–100 with explanation (OpenRouter)
 - ✅ 3 variants of cold emails (short, medium, case)
 - ✅ Save to Supabase
 - ✅ Honest email finder (no fake emails, SMTP verification)
 
-## 🔮 What's Next
+## 📸 Screenshots
+
+### Web Interface (Main Page)
+![Web Interface 1](screenshots/web-interface-1.png)
+
+### Lead Search Results
+![Web Interface 2](screenshots/web-interface-2.png)
+
+### n8n Workflow
+![n8n Workflow](screenshots/workflow.png)
+
+## 🔮 What's Next (potential return)
 
 - [ ] Connect FastAPI ↔ n8n
 - [ ] Add Signals (hiring, funding, CRO change)
 - [ ] Frontend RU/EN
 - [ ] Hosting (VPS, 24/7)
 - [ ] Monetization (Lemon Squeezy)
+- [ ] **Potential return after Ausbildung in Germany**
 
 ## 📂 Project Structure
 axiom-mind/
@@ -67,6 +88,9 @@ axiom-mind/
 ├── requirements.txt # Dependencies
 ├── supabase_schema.sql # Database schema
 └── screenshots/
+├── web-interface-1.png
+├── web-interface-2.png
+└── workflow.png
 
 text
 
@@ -85,7 +109,11 @@ python main.py
 Open index.html in browser
 
 👩‍💻 Author
-Valya — 17-year-old self-taught AI developer. Building in public.
+Valya — 17-year-old self-taught AI developer.
+IT Enthusiast & Future Fachinformatikerin
+Building AI automation tools (n8n, Python)
+Focus: Data & Process Analysis
+Russia → Germany 🇩🇪
 
 X (Twitter): @valyadefton
 GitHub: @valyadefton
