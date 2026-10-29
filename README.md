@@ -108,13 +108,14 @@ axiom-mind/
 2. Run n8n:
 ```bash
 docker run -it --rm --name n8n -p 5678:5678 -v n8n_data:/home/node/.n8n docker.n8n.io/n8nio/n8n
-Run FastAPI:
-
-bash
+```
+3. Run FastAPI:
+```bash
 cd axiom-mind
 pip install -r requirements.txt
 python main.py
-Open index.html in browser
+```
+4. Open `index.html` in browser
 
 👩‍💻 Author
 Valya — 17-year-old self-taught AI developer.
