@@ -83,19 +83,21 @@ text
 - [ ] **Potential return after Ausbildung in Germany**
 
 ## 📂 Project Structure
-axiom-mind/
-├── main.py # FastAPI backend
-├── email_finder.py # Honest email finder
-├── email_verify.py # SMTP verification
-├── index.html # Frontend
-├── requirements.txt # Dependencies
-├── supabase_schema.sql # Database schema
-└── screenshots/
-├── web-interface-1.png
-├── web-interface-2.png
-└── workflow.png
 
-text
+```text
+axiom-mind/
+├── main.py              # FastAPI backend
+├── email_finder.py      # Honest email finder
+├── email_verify.py      # SMTP verification
+├── index.html           # Frontend
+├── requirements.txt     # Dependencies
+├── supabase_schema.sql  # Database schema
+└── screenshots/
+    ├── 01-web-main.png
+    ├── 02-web-results.png
+    ├── 03-web-lead.png
+    └── 04-workflow-final.png
+```
 
 ## 🚀 How to Run
 
