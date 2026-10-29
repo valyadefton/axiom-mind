@@ -31,6 +31,7 @@ Companies waste hours manually researching prospects. Then send generic emails t
 
 ## 🛠️ Stack
 
+```text
 | Component | Technology |
 |---|---|
 | Orchestration | n8n (Docker) |
@@ -39,17 +40,19 @@ Companies waste hours manually researching prospects. Then send generic emails t
 | LLM | OpenRouter (Gemini 2.5 Flash / NVIDIA Nemotron) |
 | Search | Serper.dev |
 | Email finder | Custom (website scrape + SMTP verify) |
+```
 
 ## 🏗️ Architecture
-[Frontend: index.html]
-↓
-[FastAPI: main.py]
-↓
-[n8n Webhook → Serper → Code → OpenRouter → Code → Iteration → find_email → Code → Jev → Code → Respond]
-↓
-[Supabase: leads, contacts, emails, searches]
 
-text
+```text
+[Frontend: index.html]
+        ↓
+[FastAPI: main.py]
+        ↓
+[n8n Webhook → Serper → Code → OpenRouter → Code → Iteration → find_email → Code → Jev → Code → Respond]
+        ↓
+[Supabase: leads, contacts, emails, searches]
+```
 
 ## 🚀 What Works
 
